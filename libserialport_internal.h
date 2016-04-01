@@ -26,7 +26,7 @@
 /* For timeradd, timersub, timercmp. */
 #define _BSD_SOURCE 1 /* for glibc < 2.19 */
 #define _DEFAULT_SOURCE 1 /* for glibc >= 2.20 */
-#endif
+#endif /* __linux__ */
 
 #include <string.h>
 #include <sys/types.h>
@@ -48,33 +48,33 @@
 	static const GUID name = { l,w1,w2,{ b1,b2,b3,b4,b5,b6,b7,b8 } }
 #include <usbioctl.h>
 #include <usbiodef.h>
-#else
+#else /* !_WIN32 */
 #include <limits.h>
 #include <termios.h>
 #include <sys/ioctl.h>
 #include <sys/time.h>
 #include <limits.h>
 #include <poll.h>
-#endif
+#endif /* !_WIN32 */
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
 #include <IOKit/IOKitLib.h>
 #include <IOKit/serial/IOSerialKeys.h>
 #include <IOKit/serial/ioss.h>
 #include <sys/syslimits.h>
-#endif
+#endif /* __APPLE__ */
 #ifdef __linux__
 #include <dirent.h>
 #ifndef __ANDROID__
 #include "linux/serial.h"
-#endif
+#endif /* __ANDROID__ */
 #include "linux_termios.h"
 
 /* TCGETX/TCSETX is not available everywhere. */
 #if defined(TCGETX) && defined(TCSETX) && defined(HAVE_STRUCT_TERMIOX)
 #define USE_TERMIOX
 #endif
-#endif
+#endif /* __linux__ */
 
 /* TIOCINQ/TIOCOUTQ is not available everywhere. */
 #if !defined(TIOCINQ) && defined(FIONREAD)
@@ -153,10 +153,10 @@ typedef int event_handle;
 #ifdef _WIN32
 #define BAUD_TYPE DWORD
 #define BAUD(n) {CBR_##n, n}
-#else
+#else /* !_WIN32 */
 #define BAUD_TYPE speed_t
 #define BAUD(n) {B##n, n}
-#endif
+#endif /* !_WIN32 */
 
 struct std_baudrate {
 	BAUD_TYPE index;
@@ -234,4 +234,4 @@ SP_PRIV struct sp_port **list_append(struct sp_port **list, const char *portname
 SP_PRIV enum sp_return get_port_details(struct sp_port *port);
 SP_PRIV enum sp_return list_ports(struct sp_port ***list);
 
-#endif
+#endif /* LIBSERIALPORT_LIBSERIALPORT_INTERNAL_H */

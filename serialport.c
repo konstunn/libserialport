@@ -1425,7 +1425,7 @@ SP_API enum sp_return sp_wait(struct sp_event_set *event_set,
 		RETURN_FAIL("WaitForMultipleObjects() failed");
 
 	RETURN_OK();
-#else
+#else /* !_WIN32 */
 	struct timeval start, delta, now, end = {0, 0};
 	const struct timeval max_delta = {
 		(INT_MAX / 1000), (INT_MAX % 1000) * 1000};
@@ -1506,7 +1506,7 @@ SP_API enum sp_return sp_wait(struct sp_event_set *event_set,
 
 	free(pollfds);
 	RETURN_OK();
-#endif
+#endif /* !_WIN32 */
 }
 
 #ifdef USE_TERMIOS_SPEED
