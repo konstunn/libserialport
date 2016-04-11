@@ -465,7 +465,7 @@ SP_API enum sp_return sp_open(struct sp_port *port, enum sp_mode flags)
 	sprintf(escaped_port_name, "\\\\.\\%s", port->name);
 
 	/* Map 'flags' to the OS-specific settings. */
-	flags_and_attributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED;
+	flags_and_attributes = FILE_ATTRIBUTE_NORMAL;
 	if (flags & SP_MODE_READ)
 		desired_access |= GENERIC_READ;
 	if (flags & SP_MODE_WRITE)
